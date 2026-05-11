@@ -106,6 +106,33 @@
             background: #ffffff; color: #1f2937; border-radius: 14px;
             box-shadow: 0 25px 60px -15px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
         }
+        .timeline-scroll {
+            display: flex; gap: 1rem;
+            overflow-x: auto; overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            padding: 2rem 0 1.25rem;
+            scrollbar-color: rgba(186,172,153,0.4) transparent;
+            scrollbar-width: thin;
+        }
+        .timeline-scroll::-webkit-scrollbar { height: 8px; }
+        .timeline-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); border-radius: 9999px; }
+        .timeline-scroll::-webkit-scrollbar-thumb { background: rgba(186,172,153,0.3); border-radius: 9999px; }
+        .timeline-scroll::-webkit-scrollbar-thumb:hover { background: rgba(186,172,153,0.5); }
+        .timeline-rail {
+            position: absolute; left: 0; right: 0; top: 2.6rem;
+            height: 1px; background: rgba(255,255,255,0.08);
+            pointer-events: none;
+        }
+        .tl-item {
+            position: relative; flex: 0 0 280px;
+            scroll-snap-align: start;
+            padding-top: 1.25rem;
+        }
+        .tl-item .tl-dot {
+            position: absolute; top: -0.4rem; left: 0;
+            width: 14px; height: 14px; border-radius: 9999px;
+            box-shadow: 0 0 0 4px #272727;
+        }
     </style>
 </head>
 <body class="antialiased min-h-screen bg-brand-bg text-text-primary">
@@ -139,6 +166,12 @@
                 <span class="px-3 py-1 rounded-full text-xs font-medium bg-brand-accent/10 text-brand-accent border border-brand-accent/20">
                     Mythos &middot; Status mei 2026
                 </span>
+                <div class="rounded-xl bg-white/[0.03] border border-white/[0.06] px-4 py-3 max-w-3xl flex items-center gap-3">
+                    <div class="text-[10px] font-mono tracking-widest text-brand-accent shrink-0">OP MAAT GEMAAKT</div>
+                    <p class="text-sm text-text-secondary leading-relaxed">
+                        Voor de rechtenstudenten van <strong class="text-text-primary">Adek (Anton de Kom Universiteit van Suriname)</strong> als naslag bij hun studie EU en VS AI-wetgeving.
+                    </p>
+                </div>
                 <h1 class="font-display font-bold text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-tight max-w-4xl">
                     AI Cyber Security <span class="wordmark-complex">Law</span>
                 </h1>
@@ -182,56 +215,60 @@
                     De belangrijkste data om in de roadmap te zetten. Wordt het Omnibus akkoord niet aangenomen voor 2 augustus 2026, dan blijft de oorspronkelijke AI Act tijdlijn vanaf die datum van kracht.
                 </p>
             </div>
-            <ol class="relative border-l-2 border-white/[0.08] ml-3 space-y-7 pl-6">
-                <li class="relative">
-                    <span class="timeline-dot bg-brand-accent absolute -left-[31px] top-1.5 ring-4 ring-brand-bg"></span>
-                    <div class="text-xs font-medium tracking-wider text-brand-accent uppercase">2 augustus 2026</div>
-                    <p class="font-semibold mt-1">AI Act standaard activatie of Omnibus uitstel</p>
-                    <p class="text-sm text-text-secondary mt-1">Zonder formele aanname van het Digital AI Omnibus treden hoog-risico verplichtingen alsnog op deze datum in werking.</p>
-                </li>
-                <li class="relative">
-                    <span class="timeline-dot bg-brand-accent-warm absolute -left-[31px] top-1.5 ring-4 ring-brand-bg"></span>
-                    <div class="text-xs font-medium tracking-wider text-brand-accent-warm uppercase">2 augustus 2026</div>
-                    <p class="font-semibold mt-1">California AI Transparency Act (SB 942)</p>
-                    <p class="text-sm text-text-secondary mt-1">Verplichte watermerken en gratis AI-content detectietools voor grote platformen. Eerder uitgesteld vanaf 1 januari 2026.</p>
-                </li>
-                <li class="relative">
-                    <span class="timeline-dot bg-rose-400 absolute -left-[31px] top-1.5 ring-4 ring-brand-bg"></span>
-                    <div class="text-xs font-medium tracking-wider text-rose-400 uppercase">11 september 2026</div>
-                    <p class="font-semibold mt-1">CRA rapportageplicht actief</p>
-                    <p class="text-sm text-text-secondary mt-1">Fabrikanten moeten actief misbruikte kwetsbaarheden binnen 24 uur melden bij ENISA, volledig rapport binnen 72 uur, eindrapport binnen 14 dagen.</p>
-                </li>
-                <li class="relative">
-                    <span class="timeline-dot bg-sky-400 absolute -left-[31px] top-1.5 ring-4 ring-brand-bg"></span>
-                    <div class="text-xs font-medium tracking-wider text-sky-400 uppercase">12 september 2026</div>
-                    <p class="font-semibold mt-1">Data Act ontwerpvereisten</p>
-                    <p class="text-sm text-text-secondary mt-1">Nieuwe IoT-producten op de EU-markt moeten data-by-design toegankelijk maken voor gebruikers. Duitsland: tot 4% jaaromzet boete via Bundesnetzagentur.</p>
-                </li>
-                <li class="relative">
-                    <span class="timeline-dot bg-emerald-400 absolute -left-[31px] top-1.5 ring-4 ring-brand-bg"></span>
-                    <div class="text-xs font-medium tracking-wider text-emerald-400 uppercase">2 december 2026</div>
-                    <p class="font-semibold mt-1">Watermerk- en herkomstplicht AI-content</p>
-                    <p class="text-sm text-text-secondary mt-1">EU-brede verplichting voor labeling van AI-gegenereerde inhoud, onder de Omnibus-aanpak.</p>
-                </li>
-                <li class="relative">
-                    <span class="timeline-dot bg-text-muted absolute -left-[31px] top-1.5 ring-4 ring-brand-bg"></span>
-                    <div class="text-xs font-medium tracking-wider text-text-muted uppercase">2 december 2027</div>
-                    <p class="font-semibold mt-1">AI Act: hoog-risico standalone systemen</p>
-                    <p class="text-sm text-text-secondary mt-1">Volledige verplichtingen voor standalone hoog-risico AI: risicobeheer, CE-markering, EU-database registratie.</p>
-                </li>
-                <li class="relative">
-                    <span class="timeline-dot bg-text-muted absolute -left-[31px] top-1.5 ring-4 ring-brand-bg"></span>
-                    <div class="text-xs font-medium tracking-wider text-text-muted uppercase">11 december 2027</div>
-                    <p class="font-semibold mt-1">CRA volledige naleving inclusief SBOM</p>
-                    <p class="text-sm text-text-secondary mt-1">Boetes tot &euro;15 miljoen of 2,5% wereldwijde jaaromzet bij niet-naleving.</p>
-                </li>
-                <li class="relative">
-                    <span class="timeline-dot bg-text-muted absolute -left-[31px] top-1.5 ring-4 ring-brand-bg"></span>
-                    <div class="text-xs font-medium tracking-wider text-text-muted uppercase">2 augustus 2028</div>
-                    <p class="font-semibold mt-1">AI Act: hoog-risico in gereguleerde producten</p>
-                    <p class="text-sm text-text-secondary mt-1">AI in medische apparaten, machines en andere CE-producten valt onder volledige verplichtingen.</p>
-                </li>
-            </ol>
+            <div class="relative">
+                <div class="timeline-scroll" id="timelineScroll">
+                    <div class="timeline-rail"></div>
+
+                    <div class="tl-item">
+                        <span class="tl-dot" style="background:#BAAC99;"></span>
+                        <div class="text-xs font-medium tracking-wider text-brand-accent uppercase">2 augustus 2026</div>
+                        <p class="font-semibold mt-1.5">AI Act standaard activatie of Omnibus uitstel</p>
+                        <p class="text-sm text-text-secondary mt-1.5">Zonder formele aanname van het Digital AI Omnibus treden hoog-risico verplichtingen alsnog op deze datum in werking.</p>
+                    </div>
+                    <div class="tl-item">
+                        <span class="tl-dot" style="background:#f59e0b;"></span>
+                        <div class="text-xs font-medium tracking-wider text-brand-accent-warm uppercase">2 augustus 2026</div>
+                        <p class="font-semibold mt-1.5">California AI Transparency Act (SB 942)</p>
+                        <p class="text-sm text-text-secondary mt-1.5">Verplichte watermerken en gratis AI-content detectietools voor grote platformen. Eerder uitgesteld vanaf 1 januari 2026.</p>
+                    </div>
+                    <div class="tl-item">
+                        <span class="tl-dot" style="background:#fb7185;"></span>
+                        <div class="text-xs font-medium tracking-wider text-rose-400 uppercase">11 september 2026</div>
+                        <p class="font-semibold mt-1.5">CRA rapportageplicht actief</p>
+                        <p class="text-sm text-text-secondary mt-1.5">Fabrikanten moeten actief misbruikte kwetsbaarheden binnen 24 uur melden bij ENISA, volledig rapport binnen 72 uur, eindrapport binnen 14 dagen.</p>
+                    </div>
+                    <div class="tl-item">
+                        <span class="tl-dot" style="background:#38bdf8;"></span>
+                        <div class="text-xs font-medium tracking-wider text-sky-400 uppercase">12 september 2026</div>
+                        <p class="font-semibold mt-1.5">Data Act ontwerpvereisten</p>
+                        <p class="text-sm text-text-secondary mt-1.5">Nieuwe IoT-producten op de EU-markt moeten data-by-design toegankelijk maken voor gebruikers. Duitsland: tot 4% jaaromzet boete via Bundesnetzagentur.</p>
+                    </div>
+                    <div class="tl-item">
+                        <span class="tl-dot" style="background:#34d399;"></span>
+                        <div class="text-xs font-medium tracking-wider text-emerald-400 uppercase">2 december 2026</div>
+                        <p class="font-semibold mt-1.5">Watermerk- en herkomstplicht AI-content</p>
+                        <p class="text-sm text-text-secondary mt-1.5">EU-brede verplichting voor labeling van AI-gegenereerde inhoud, onder de Omnibus-aanpak.</p>
+                    </div>
+                    <div class="tl-item">
+                        <span class="tl-dot" style="background:#606060;"></span>
+                        <div class="text-xs font-medium tracking-wider text-text-muted uppercase">2 december 2027</div>
+                        <p class="font-semibold mt-1.5">AI Act: hoog-risico standalone systemen</p>
+                        <p class="text-sm text-text-secondary mt-1.5">Volledige verplichtingen voor standalone hoog-risico AI: risicobeheer, CE-markering, EU-database registratie.</p>
+                    </div>
+                    <div class="tl-item">
+                        <span class="tl-dot" style="background:#606060;"></span>
+                        <div class="text-xs font-medium tracking-wider text-text-muted uppercase">11 december 2027</div>
+                        <p class="font-semibold mt-1.5">CRA volledige naleving inclusief SBOM</p>
+                        <p class="text-sm text-text-secondary mt-1.5">Boetes tot &euro;15 miljoen of 2,5% wereldwijde jaaromzet bij niet-naleving.</p>
+                    </div>
+                    <div class="tl-item">
+                        <span class="tl-dot" style="background:#606060;"></span>
+                        <div class="text-xs font-medium tracking-wider text-text-muted uppercase">2 augustus 2028</div>
+                        <p class="font-semibold mt-1.5">AI Act: hoog-risico in gereguleerde producten</p>
+                        <p class="text-sm text-text-secondary mt-1.5">AI in medische apparaten, machines en andere CE-producten valt onder volledige verplichtingen.</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section id="rechtspijlers" class="relative z-10 space-y-8">
@@ -439,7 +476,14 @@
         </section>
 
         <section id="kernpunten" class="relative z-10 rounded-2xl glass-card p-6 md:p-10">
-            <h2 class="font-display text-3xl sm:text-4xl font-bold mb-6">Cruciale Updates 2026</h2>
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+                <h2 class="font-display text-3xl sm:text-4xl font-bold">Cruciale Updates 2026</h2>
+                <button id="toggleAllUpdates" type="button"
+                        class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium bg-white/[0.05] text-text-primary border border-white/[0.1] hover:bg-white/[0.1] transition-all"
+                        data-state="open">
+                    <span data-label>Klap alles in</span>
+                </button>
+            </div>
 
             <div class="space-y-3" id="accordion-container">
 
@@ -453,7 +497,7 @@
                     </div>
                 </details>
 
-                <details class="rounded-xl bg-white/[0.03] border border-white/[0.08] overflow-hidden">
+                <details class="rounded-xl bg-white/[0.03] border border-white/[0.08] overflow-hidden" open>
                     <summary class="px-6 py-4 hover:bg-white/[0.05] flex justify-between items-center transition-colors">
                         <span class="font-display font-semibold text-brand-accent">CRA: CE-markering voor Software</span>
                         <span class="text-2xl accordion-icon">+</span>
@@ -463,7 +507,7 @@
                     </div>
                 </details>
 
-                <details class="rounded-xl bg-white/[0.03] border border-white/[0.08] overflow-hidden">
+                <details class="rounded-xl bg-white/[0.03] border border-white/[0.08] overflow-hidden" open>
                     <summary class="px-6 py-4 hover:bg-white/[0.05] flex justify-between items-center transition-colors">
                         <span class="font-display font-semibold text-brand-accent">Data Act &amp; AI Training Data</span>
                         <span class="text-2xl accordion-icon">+</span>
@@ -473,7 +517,7 @@
                     </div>
                 </details>
 
-                <details class="rounded-xl bg-white/[0.03] border border-white/[0.08] overflow-hidden">
+                <details class="rounded-xl bg-white/[0.03] border border-white/[0.08] overflow-hidden" open>
                     <summary class="px-6 py-4 hover:bg-white/[0.05] flex justify-between items-center transition-colors">
                         <span class="font-display font-semibold text-brand-accent">VS: Federale preemptie versus Staatsregels</span>
                         <span class="text-2xl accordion-icon">+</span>
@@ -483,7 +527,7 @@
                     </div>
                 </details>
 
-                <details class="rounded-xl bg-white/[0.03] border border-white/[0.08] overflow-hidden">
+                <details class="rounded-xl bg-white/[0.03] border border-white/[0.08] overflow-hidden" open>
                     <summary class="px-6 py-4 hover:bg-white/[0.05] flex justify-between items-center transition-colors">
                         <span class="font-display font-semibold text-brand-accent">Praktische actiepunten voor Q3 2026</span>
                         <span class="text-2xl accordion-icon">+</span>
@@ -603,7 +647,7 @@
                         De Mythos casus is geen academische exercitie meer. AI Act art. 15 (robuustheid), de AI Liability Directive (bewijslast), de NY RAISE Act (frontier safety reporting) en het US AISI red teaming kader vormen samen de eerste echte juridische rem op modellen met offensieve cybercapaciteiten.
                     </p>
                     <div class="flex flex-wrap gap-3">
-                        <a href="mailto:raymond@legalcomplex.com" class="inline-flex items-center px-5 py-2.5 rounded-lg text-sm font-medium bg-brand-button text-text-primary hover:bg-brand-button/90 shadow-lg shadow-brand-button/20 transition-all">Contact Mythos research</a>
+                        <a href="mailto:raymond@legalcomplex.com" class="inline-flex items-center px-5 py-2.5 rounded-lg text-sm font-medium bg-brand-button text-text-primary hover:bg-brand-button/90 shadow-lg shadow-brand-button/20 transition-all">Contact Raymond voor research</a>
                         <a href="#architectuur" class="inline-flex items-center px-5 py-2.5 rounded-lg text-sm font-medium bg-white/[0.05] text-text-primary border border-white/[0.1] hover:bg-white/[0.1] transition-all">Bekijk de architectuur</a>
                     </div>
                 </div>
@@ -613,19 +657,6 @@
 
     <footer class="border-t border-white/[0.06] mt-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-
-            <div class="rounded-xl bg-white/[0.03] border border-white/[0.06] p-5 mb-8 flex flex-col sm:flex-row sm:items-center gap-4">
-                <div class="flex-1">
-                    <div class="text-[10px] font-mono tracking-widest text-brand-accent mb-1.5">OP MAAT GEMAAKT</div>
-                    <p class="text-sm text-text-secondary leading-relaxed">
-                        Dit dashboard is samengesteld voor de rechtenstudenten van <strong class="text-text-primary">Adek (Anton de Kom Universiteit van Suriname)</strong> als naslag bij hun studie EU en VS AI-wetgeving.
-                    </p>
-                </div>
-                <a href="https://legalcomplex.com" target="_blank" rel="noopener" class="inline-flex items-center gap-2 shrink-0 px-4 py-2 rounded-lg text-sm font-medium bg-white/[0.05] text-text-primary border border-white/[0.1] hover:bg-white/[0.1] transition-all">
-                    <span>Terug naar Legalcomplex.com</span>
-                    <span aria-hidden="true">&rarr;</span>
-                </a>
-            </div>
 
             <div class="flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="text-center md:text-left">
@@ -703,6 +734,18 @@
                 }
             }
         });
+
+        const toggleAllBtn = document.getElementById('toggleAllUpdates');
+        const accordionContainer = document.getElementById('accordion-container');
+        if (toggleAllBtn && accordionContainer) {
+            const label = toggleAllBtn.querySelector('[data-label]');
+            toggleAllBtn.addEventListener('click', () => {
+                const isOpen = toggleAllBtn.dataset.state === 'open';
+                accordionContainer.querySelectorAll('details').forEach(d => { d.open = !isOpen; });
+                toggleAllBtn.dataset.state = isOpen ? 'closed' : 'open';
+                label.textContent = isOpen ? 'Klap alles uit' : 'Klap alles in';
+            });
+        }
 
         const filterBtns = document.querySelectorAll('.filter-btn');
         const standardCards = document.querySelectorAll('.standard-card');
