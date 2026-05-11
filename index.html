@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="nl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mythos · AI Compliance & Standaarden 2026 · Legalcomplex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;700&family=Manrope:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-bg': '#272727',
+                        'brand-surface': '#1a1a1a',
+                        'brand-border': '#2a2a2a',
+                        'brand-faint': '#2d2d2d',
+                        'brand-muted': '#4a4a4a',
+                        'brand-button': '#5C5851',
+                        'brand-accent': '#BAAC99',
+                        'brand-accent-warm': '#f59e0b',
+                        'text-primary': '#f0f0f0',
+                        'text-secondary': '#a0a0a0',
+                        'text-muted': '#606060'
+                    },
+                    fontFamily: {
+                        sans: ['Manrope', 'system-ui', 'sans-serif'],
+                        display: ['Comfortaa', 'Manrope', 'sans-serif'],
+                        mono: ['Fira Code', 'JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #272727; color: #f0f0f0; font-family: 'Manrope', system-ui, sans-serif; }
+        h1, h2, h3, .font-display { font-family: 'Comfortaa', 'Manrope', sans-serif; letter-spacing: -0.01em; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 40vh;
+            max-height: 400px;
+            min-height: 300px;
+        }
+        .transition-all-custom { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .standard-card { transition: background-color .2s, border-color .2s, transform .2s; }
+        .standard-card:hover { transform: translateY(-2px); background-color: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); }
+        .timeline-dot { width: 12px; height: 12px; border-radius: 9999px; flex-shrink: 0; }
+        details > summary { list-style: none; cursor: pointer; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] .accordion-icon { transform: rotate(45deg); }
+        .accordion-icon { transition: transform 0.2s ease; display: inline-block; color: #BAAC99; }
+        .hero-glow {
+            position: absolute; pointer-events: none; border-radius: 9999px;
+            background: rgba(186, 172, 153, 0.07);
+            filter: blur(120px); width: 600px; height: 600px;
+            top: -200px; left: 50%; transform: translateX(-50%);
+            z-index: 0;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px);} to { opacity: 1; transform: translateY(0);} }
+        .animate-fade-in { animation: fadeIn .6s ease-out forwards; opacity: 0; }
+        .stagger-children > * { opacity: 0; animation: fadeIn .5s ease-out forwards; }
+        .stagger-children > *:nth-child(1) { animation-delay: .05s; }
+        .stagger-children > *:nth-child(2) { animation-delay: .10s; }
+        .stagger-children > *:nth-child(3) { animation-delay: .15s; }
+        .stagger-children > *:nth-child(4) { animation-delay: .20s; }
+        .stagger-children > *:nth-child(5) { animation-delay: .25s; }
+        .stagger-children > *:nth-child(6) { animation-delay: .30s; }
+        .stagger-children > *:nth-child(7) { animation-delay: .35s; }
+        .stagger-children > *:nth-child(8) { animation-delay: .40s; }
+        .wordmark-complex { color: #BAAC99; }
+        ::selection { background: #BAAC99; color: #272727; }
+        .glass-card {
+            background-color: rgba(255,255,255,0.03);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .pillar-card { position: relative; }
+        .pillar-card .crack-glyph {
+            position: absolute; top: 18px; right: 18px;
+            width: 18px; height: 18px; opacity: 0.5;
+        }
+        .bridge-rail {
+            position: relative;
+            min-height: 96px;
+            display: flex; align-items: center; justify-content: center;
+            border-top: 1px solid rgba(186,172,153,0.4);
+            border-bottom: 1px solid rgba(186,172,153,0.4);
+            background: linear-gradient(180deg, rgba(186,172,153,0.04), rgba(186,172,153,0.12), rgba(186,172,153,0.04));
+        }
+        .bridge-rail::before, .bridge-rail::after {
+            content: ''; position: absolute; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(186,172,153,0.7), transparent);
+        }
+        .bridge-rail::before { top: 22px; }
+        .bridge-rail::after { bottom: 22px; }
+        @media (max-width: 768px) { .bridge-rail { min-height: 56px; } }
+        .news-card {
+            background: #ffffff; color: #1f2937; border-radius: 14px;
+            box-shadow: 0 25px 60px -15px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen bg-brand-bg text-text-primary">
+
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-brand-bg/80 border-b border-white/[0.06]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex justify-between items-center">
+            <div class="flex items-baseline gap-3">
+                <a href="#top" class="font-display text-xl tracking-tight">
+                    <span>legal</span><span class="wordmark-complex">complex</span>
+                </a>
+                <span class="hidden sm:inline text-text-muted text-xs">/</span>
+                <span class="hidden sm:inline text-text-secondary text-sm font-display">Mythos</span>
+            </div>
+            <nav class="hidden md:flex items-center gap-1 text-sm">
+                <a href="#tijdlijn" class="px-3 py-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-white/[0.05] transition-colors">Tijdlijn</a>
+                <a href="#rechtspijlers" class="px-3 py-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-white/[0.05] transition-colors">Pijlers</a>
+                <a href="#architectuur" class="px-3 py-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-white/[0.05] transition-colors">Architectuur</a>
+                <a href="#standaarden" class="px-3 py-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-white/[0.05] transition-colors">Standaarden</a>
+                <a href="#kernpunten" class="px-3 py-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-white/[0.05] transition-colors">Updates</a>
+                <a href="#mythos" class="px-3 py-2 rounded-lg text-brand-accent hover:bg-brand-accent/10 transition-colors">Mythos</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="top" class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 space-y-20">
+        <div class="hero-glow"></div>
+
+        <section class="relative z-10 animate-fade-in">
+            <div class="flex flex-col items-start gap-4">
+                <span class="px-3 py-1 rounded-full text-xs font-medium bg-brand-accent/10 text-brand-accent border border-brand-accent/20">
+                    Mythos &middot; Status mei 2026
+                </span>
+                <h1 class="font-display font-bold text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-tight max-w-4xl">
+                    AI Cyber Security <span class="wordmark-complex">Law</span>
+                </h1>
+                <p class="text-text-secondary text-lg sm:text-xl max-w-3xl leading-relaxed">
+                    Het volledige EU en VS wetgevingspakket voor AI-producten in 2026. Een navigeerbaar dashboard van de Mythos research reeks: deadlines, standaarden en handhavingsrisico's op één scherm.
+                </p>
+            </div>
+        </section>
+
+        <section id="landschap" class="relative z-10 rounded-2xl glass-card p-6 md:p-10">
+            <div class="grid md:grid-cols-2 gap-10 items-center">
+                <div>
+                    <span class="inline-block text-xs font-medium uppercase tracking-wider text-brand-accent bg-brand-accent/10 border border-brand-accent/20 px-3 py-1 rounded-full mb-4">Compliance Mix 2026</span>
+                    <h2 class="font-display text-3xl sm:text-4xl font-bold mb-4 leading-tight">Vijf focusgebieden, één roadmap</h2>
+                    <p class="text-text-secondary leading-relaxed">
+                        Op 7 mei 2026 bereikten EU-wetgevers politiek akkoord over het Digital AI Omnibus pakket, dat de zwaarste hoog-risico verplichtingen van de AI Act uitstelt naar december 2027. Tegelijkertijd treden de CRA rapportageplicht (september 2026) en de Data Act ontwerpvereisten (september 2026) wel in werking.
+                    </p>
+                    <div class="mt-6 grid grid-cols-2 gap-3 text-sm">
+                        <div class="glass-card rounded-xl p-4">
+                            <div class="font-display text-3xl font-bold text-brand-accent">9</div>
+                            <div class="text-xs text-text-secondary mt-1">Actieve kaders</div>
+                        </div>
+                        <div class="glass-card rounded-xl p-4">
+                            <div class="font-display text-3xl font-bold text-brand-accent-warm">€35M</div>
+                            <div class="text-xs text-text-secondary mt-1">Maximale boete AI Act</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rounded-xl glass-card p-4 md:p-6 flex items-center justify-center">
+                    <div class="chart-container">
+                        <canvas id="complianceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tijdlijn" class="relative z-10 space-y-6">
+            <div>
+                <h2 class="font-display text-3xl sm:text-4xl font-bold mb-3">Deadlines 2026 &mdash; 2028</h2>
+                <p class="text-text-secondary leading-relaxed max-w-4xl">
+                    De belangrijkste data om in de roadmap te zetten. Wordt het Omnibus akkoord niet aangenomen voor 2 augustus 2026, dan blijft de oorspronkelijke AI Act tijdlijn vanaf die datum van kracht.
+                </p>
+            </div>
+            <ol class="relative border-l-2 border-white/[0.08] ml-3 space-y-7 pl-6">
+                <li class="relative">
+                    <span class="timeline-dot bg-brand-accent absolute -left-[31px] top-1.5 ring-4 ring-brand-bg"></span>
+                    <div class="text-xs font-medium tracking-wider text-brand-accent uppercase">2 augustus 2026</div>
+                    <p class="font-semibold mt-1">AI Act standaard activatie of Omnibus uitstel</p>
+                    <p class="text-sm text-text-secondary mt-1">Zonder formele aanname van het Digital AI Omnibus treden hoog-risico verplichtingen alsnog op deze datum in werking.</p>
+                </li>
+                <li class="relative">
+                    <span class="timeline-dot bg-brand-accent-warm absolute -left-[31px] top-1.5 ring-4 ring-brand-bg"></span>
+                    <div class="text-xs font-medium tracking-wider text-brand-accent-warm uppercase">2 augustus 2026</div>
+                    <p class="font-semibold mt-1">California AI Transparency Act (SB 942)</p>
+                    <p class="text-sm text-text-secondary mt-1">Verplichte watermerken en gratis AI-content detectietools voor grote platformen. Eerder uitgesteld vanaf 1 januari 2026.</p>
+                </li>
+                <li class="relative">
+                    <span class="timeline-dot bg-rose-400 absolute -left-[31px] top-1.5 ring-4 ring-brand-bg"></span>
+                    <div class="text-xs font-medium tracking-wider text-rose-400 uppercase">11 september 2026</div>
+                    <p class="font-semibold mt-1">CRA rapportageplicht actief</p>
+                    <p class="text-sm text-text-secondary mt-1">Fabrikanten moeten actief misbruikte kwetsbaarheden binnen 24 uur melden bij ENISA, volledig rapport binnen 72 uur, eindrapport binnen 14 dagen.</p>
+                </li>
+                <li class="relative">
+                    <span class="timeline-dot bg-sky-400 absolute -left-[31px] top-1.5 ring-4 ring-brand-bg"></span>
+                    <div class="text-xs font-medium tracking-wider text-sky-400 uppercase">12 september 2026</div>
+                    <p class="font-semibold mt-1">Data Act ontwerpvereisten</p>
+                    <p class="text-sm text-text-secondary mt-1">Nieuwe IoT-producten op de EU-markt moeten data-by-design toegankelijk maken voor gebruikers. Duitsland: tot 4% jaaromzet boete via Bundesnetzagentur.</p>
+                </li>
+                <li class="relative">
+                    <span class="timeline-dot bg-emerald-400 absolute -left-[31px] top-1.5 ring-4 ring-brand-bg"></span>
+                    <div class="text-xs font-medium tracking-wider text-emerald-400 uppercase">2 december 2026</div>
+                    <p class="font-semibold mt-1">Watermerk- en herkomstplicht AI-content</p>
+                    <p class="text-sm text-text-secondary mt-1">EU-brede verplichting voor labeling van AI-gegenereerde inhoud, onder de Omnibus-aanpak.</p>
+                </li>
+                <li class="relative">
+                    <span class="timeline-dot bg-text-muted absolute -left-[31px] top-1.5 ring-4 ring-brand-bg"></span>
+                    <div class="text-xs font-medium tracking-wider text-text-muted uppercase">2 december 2027</div>
+                    <p class="font-semibold mt-1">AI Act: hoog-risico standalone systemen</p>
+                    <p class="text-sm text-text-secondary mt-1">Volledige verplichtingen voor standalone hoog-risico AI: risicobeheer, CE-markering, EU-database registratie.</p>
+                </li>
+                <li class="relative">
+                    <span class="timeline-dot bg-text-muted absolute -left-[31px] top-1.5 ring-4 ring-brand-bg"></span>
+                    <div class="text-xs font-medium tracking-wider text-text-muted uppercase">11 december 2027</div>
+                    <p class="font-semibold mt-1">CRA volledige naleving inclusief SBOM</p>
+                    <p class="text-sm text-text-secondary mt-1">Boetes tot &euro;15 miljoen of 2,5% wereldwijde jaaromzet bij niet-naleving.</p>
+                </li>
+                <li class="relative">
+                    <span class="timeline-dot bg-text-muted absolute -left-[31px] top-1.5 ring-4 ring-brand-bg"></span>
+                    <div class="text-xs font-medium tracking-wider text-text-muted uppercase">2 augustus 2028</div>
+                    <p class="font-semibold mt-1">AI Act: hoog-risico in gereguleerde producten</p>
+                    <p class="text-sm text-text-secondary mt-1">AI in medische apparaten, machines en andere CE-producten valt onder volledige verplichtingen.</p>
+                </li>
+            </ol>
+        </section>
+
+        <section id="rechtspijlers" class="relative z-10 space-y-8">
+            <div>
+                <span class="inline-block px-3 py-1 rounded-full text-xs font-medium bg-rose-400/10 text-rose-400 border border-rose-400/20">Diagnose</span>
+                <h2 class="font-display text-3xl sm:text-4xl font-bold mt-4 mb-3 leading-tight">De Klassieke Rechtspijlers <span class="text-rose-400">Falen</span></h2>
+                <p class="text-text-secondary leading-relaxed max-w-4xl">
+                    Bestaande wetgeving is gebouwd voor fysieke schade en menselijk handelen. Adversarial attacks via onzichtbare pixels en data poisoning vallen tussen drie rechtsgebieden door. Drie pijlers, drie breuken.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-5 stagger-children">
+                <article class="pillar-card glass-card rounded-xl p-6">
+                    <div class="text-[10px] font-mono tracking-widest text-text-muted mb-3">PIJLER 01</div>
+                    <h3 class="font-display text-lg font-bold mb-3">Strafrecht</h3>
+                    <span class="inline-block text-xs font-medium text-rose-400 bg-rose-400/10 border border-rose-400/20 px-2.5 py-0.5 rounded-full mb-4">Vangt enkel gevolgschade</span>
+                    <p class="text-text-secondary text-sm leading-relaxed">De aanval via onzichtbare pixels past niet in bestaande hack-wetgeving. Strafrecht grijpt pas na het gevolg (fraude), niet bij manipulatie van het model zelf.</p>
+                </article>
+
+                <article class="pillar-card glass-card rounded-xl p-6">
+                    <div class="text-[10px] font-mono tracking-widest text-text-muted mb-3">PIJLER 02</div>
+                    <h3 class="font-display text-lg font-bold mb-3">Aansprakelijkheidsrecht</h3>
+                    <span class="inline-block text-xs font-medium text-rose-400 bg-rose-400/10 border border-rose-400/20 px-2.5 py-0.5 rounded-full mb-4">Schuld lastig te bewijzen</span>
+                    <p class="text-text-secondary text-sm leading-relaxed">Huidige richtlijnen focussen op fysieke goederen, niet op onzichtbare code. Causaliteit tussen modeloutput en schade is voor slachtoffers vrijwel niet aantoonbaar.</p>
+                </article>
+
+                <article class="pillar-card glass-card rounded-xl p-6">
+                    <div class="text-[10px] font-mono tracking-widest text-text-muted mb-3">PIJLER 03</div>
+                    <h3 class="font-display text-lg font-bold mb-3">Intellectueel Eigendom</h3>
+                    <span class="inline-block text-xs font-medium text-rose-400 bg-rose-400/10 border border-rose-400/20 px-2.5 py-0.5 rounded-full mb-4">Onzeker beschermingsbereik</span>
+                    <p class="text-text-secondary text-sm leading-relaxed">Onzekerheid of AI-modellen beschermbaar zijn en of een adversarial aanval een inbreuk vormt. Trade secret en auteursrecht botsen met training op gescraped materiaal.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="architectuur" class="relative z-10 space-y-8">
+            <div>
+                <span class="inline-block px-3 py-1 rounded-full text-xs font-medium bg-brand-accent/10 text-brand-accent border border-brand-accent/20">Synthese</span>
+                <h2 class="font-display text-3xl sm:text-4xl font-bold mt-4 mb-3 leading-tight">De Nieuwe Europese <span class="wordmark-complex">Architectuur</span></h2>
+                <p class="text-text-secondary leading-relaxed max-w-4xl">
+                    Twee instrumenten vormen samen een defensieve brug over de oude rechtspijlers heen. Theoretisch risico wordt een harde compliance-eis, en 'Safe by Design' wordt een wettelijk fundament.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-[1fr_auto_1fr] gap-0 items-stretch glass-card rounded-2xl overflow-hidden">
+                <div class="p-7 md:p-8 border-b md:border-b-0 md:border-r border-white/[0.06]">
+                    <div class="text-[10px] font-mono tracking-widest text-text-muted mb-3">FUNDAMENT WEST</div>
+                    <h3 class="font-display text-xl font-bold text-brand-accent mb-3">AI Act (Art. 15)</h3>
+                    <span class="inline-block text-xs font-medium text-brand-accent bg-brand-accent/10 border border-brand-accent/20 px-2.5 py-0.5 rounded-full mb-4">Wettelijke Duty of Care</span>
+                    <p class="text-text-secondary text-sm leading-relaxed">Creëert een wettelijke 'Duty of Care' voor High-Risk systemen. Verplicht robuustheid tegen data poisoning en adversarial examples. Wat eerst best practice was, wordt nu meetbare compliance-eis.</p>
+                </div>
+
+                <div class="bridge-rail px-6 md:px-8 md:w-72">
+                    <div class="text-center">
+                        <div class="text-[10px] font-mono tracking-widest text-brand-accent mb-2">DEFENSIEVE BRUG</div>
+                        <div class="font-display text-base md:text-lg font-semibold text-text-primary leading-tight">Safe by Design<br/><span class="text-brand-accent text-sm">als wettelijk fundament</span></div>
+                    </div>
+                </div>
+
+                <div class="p-7 md:p-8 border-t md:border-t-0 md:border-l border-white/[0.06]">
+                    <div class="text-[10px] font-mono tracking-widest text-text-muted mb-3">FUNDAMENT OOST</div>
+                    <h3 class="font-display text-xl font-bold text-brand-accent mb-3">AI Liability Directive</h3>
+                    <span class="inline-block text-xs font-medium text-brand-accent bg-brand-accent/10 border border-brand-accent/20 px-2.5 py-0.5 rounded-full mb-4">Verschuift de bewijslast</span>
+                    <p class="text-text-secondary text-sm leading-relaxed">Non-compliance met Art. 15 wordt aangenomen als oorzaak van de schade. Voor het eerst hoeft een slachtoffer niet zelf de causaliteit binnen het model te bewijzen, het vermoeden ligt bij de aanbieder.</p>
+                </div>
+            </div>
+
+            <div class="rounded-xl bg-brand-accent/[0.06] border border-brand-accent/20 p-5 md:p-6 flex flex-col md:flex-row gap-4 md:items-center">
+                <div class="text-xs font-mono tracking-widest text-brand-accent shrink-0">CONCLUSIE</div>
+                <p class="text-text-primary leading-relaxed">
+                    Europa transformeert een theoretisch risico tot een harde compliance-eis. 'Safe by Design' wordt een wettelijk fundament, en de bewijslast verschuift naar de aanbieder van het AI-systeem.
+                </p>
+            </div>
+        </section>
+
+        <section id="standaarden" class="relative z-10 space-y-6">
+            <div>
+                <h2 class="font-display text-3xl sm:text-4xl font-bold mb-3">AI Governance &amp; Standaarden</h2>
+                <p class="text-text-secondary leading-relaxed max-w-4xl">
+                    De kritieke wetten en ISO-normen die in 2026 samen het naleefkader vormen. Filter op categorie om snel te navigeren.
+                </p>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-6" id="filter-container">
+                <button class="filter-btn active px-4 py-1.5 rounded-full text-xs font-medium bg-brand-button text-text-primary shadow-lg shadow-brand-button/20 transition-all-custom" data-filter="all">Alle</button>
+                <button class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white/[0.05] text-text-secondary border border-white/[0.1] hover:bg-white/[0.1] transition-all-custom" data-filter="governance">Governance</button>
+                <button class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white/[0.05] text-text-secondary border border-white/[0.1] hover:bg-white/[0.1] transition-all-custom" data-filter="technisch">Technisch</button>
+                <button class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white/[0.05] text-text-secondary border border-white/[0.1] hover:bg-white/[0.1] transition-all-custom" data-filter="veiligheid">Veiligheid</button>
+                <button class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white/[0.05] text-text-secondary border border-white/[0.1] hover:bg-white/[0.1] transition-all-custom" data-filter="wetgeving">Wetgeving</button>
+            </div>
+
+            <div class="space-y-12">
+                <div>
+                    <h3 class="font-display text-xl font-semibold mb-4 text-text-primary border-b border-white/[0.06] pb-3">Initiële Standaarden &amp; Wetgeving</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 stagger-children">
+
+                        <article class="standard-card glass-card rounded-xl p-6 border-l-2 border-l-brand-accent" data-category="governance">
+                            <div class="text-xs font-medium tracking-wider text-brand-accent uppercase mb-3">Governance</div>
+                            <h4 class="font-display text-lg font-bold mb-3">ISO/IEC 42001</h4>
+                            <span class="inline-block text-xs font-medium text-brand-accent bg-brand-accent/10 border border-brand-accent/20 px-2.5 py-0.5 rounded-full mb-4">AI Management Systeem</span>
+                            <p class="text-text-secondary text-sm leading-relaxed">Certificeerbaar managementsysteem voor AI-risico's, ethiek en lifecycle controle. De facto basis voor AI Act conformiteit.</p>
+                        </article>
+
+                        <article class="standard-card glass-card rounded-xl p-6 border-l-2 border-l-emerald-400/70" data-category="technisch">
+                            <div class="text-xs font-medium tracking-wider text-emerald-400 uppercase mb-3">Technisch</div>
+                            <h4 class="font-display text-lg font-bold mb-3">ISO/IEC 24027</h4>
+                            <span class="inline-block text-xs font-medium text-text-secondary bg-white/[0.08] px-2.5 py-0.5 rounded-full mb-4">Bias &amp; Vooringenomenheid</span>
+                            <p class="text-text-secondary text-sm leading-relaxed">Methodologie voor het meten en verminderen van algoritmische bias. Ondersteunt AI Act art. 10 data governance vereisten.</p>
+                        </article>
+
+                        <article class="standard-card glass-card rounded-xl p-6 border-l-2 border-l-emerald-400/70" data-category="technisch">
+                            <div class="text-xs font-medium tracking-wider text-emerald-400 uppercase mb-3">Technisch</div>
+                            <h4 class="font-display text-lg font-bold mb-3">ISO/IEC 5259</h4>
+                            <span class="inline-block text-xs font-medium text-text-secondary bg-white/[0.08] px-2.5 py-0.5 rounded-full mb-4">Datakwaliteit voor ML</span>
+                            <p class="text-text-secondary text-sm leading-relaxed">Kwaliteitsraamwerk voor trainings- en testdata. Vijfdelige serie die meetbaarheid van data koppelt aan modelprestaties.</p>
+                        </article>
+
+                        <article class="standard-card glass-card rounded-xl p-6 border-l-2 border-l-brand-accent-warm" data-category="veiligheid">
+                            <div class="text-xs font-medium tracking-wider text-brand-accent-warm uppercase mb-3">Veiligheid</div>
+                            <h4 class="font-display text-lg font-bold mb-3">UL 3115</h4>
+                            <span class="inline-block text-xs font-medium text-brand-accent-warm bg-brand-accent-warm/10 border border-brand-accent-warm/20 px-2.5 py-0.5 rounded-full mb-4">AI-Productveiligheid</span>
+                            <p class="text-text-secondary text-sm leading-relaxed">Functionele veiligheid van AI-gestuurde hardware. Vereist voor markttoegang in Noord-Amerika via UL-keurmerk.</p>
+                        </article>
+
+                        <article class="standard-card glass-card rounded-xl p-6 border-l-2 border-l-brand-accent-warm" data-category="veiligheid">
+                            <div class="text-xs font-medium tracking-wider text-brand-accent-warm uppercase mb-3">Veiligheid</div>
+                            <h4 class="font-display text-lg font-bold mb-3">UL 3100</h4>
+                            <span class="inline-block text-xs font-medium text-brand-accent-warm bg-brand-accent-warm/10 border border-brand-accent-warm/20 px-2.5 py-0.5 rounded-full mb-4">Autonome Platformen</span>
+                            <p class="text-text-secondary text-sm leading-relaxed">Fysieke veiligheid voor mobiele robots en AMR's. Standaard voor logistiek, warehousing en industrie.</p>
+                        </article>
+
+                        <article class="standard-card glass-card rounded-xl p-6 border-l-2 border-l-text-muted" data-category="wetgeving">
+                            <div class="text-xs font-medium tracking-wider text-text-secondary uppercase mb-3">Wetgeving</div>
+                            <h4 class="font-display text-lg font-bold mb-3">EU AI Act</h4>
+                            <span class="inline-block text-xs font-medium text-text-secondary bg-white/[0.08] px-2.5 py-0.5 rounded-full mb-4">Hoog-risico: dec 2027</span>
+                            <p class="text-text-secondary text-sm leading-relaxed">Omnibus akkoord 7 mei 2026 stelt standalone hoog-risico verplichtingen uit naar 2 dec 2027. Boetes tot &euro;35M of 7% omzet.</p>
+                        </article>
+
+                        <article class="standard-card glass-card rounded-xl p-6 border-l-2 border-l-text-muted" data-category="wetgeving">
+                            <div class="text-xs font-medium tracking-wider text-text-secondary uppercase mb-3">Wetgeving</div>
+                            <h4 class="font-display text-lg font-bold mb-3">NIS2 Richtlijn</h4>
+                            <span class="inline-block text-xs font-medium text-text-secondary bg-white/[0.08] px-2.5 py-0.5 rounded-full mb-4">Cybersecurity essentiële sectoren</span>
+                            <p class="text-text-secondary text-sm leading-relaxed">Beveiliging van vitale infrastructuur en essentiële diensten. Bestuursaansprakelijkheid voor cyber-incidenten.</p>
+                        </article>
+
+                        <article class="standard-card glass-card rounded-xl p-6 border-l-2 border-l-text-muted" data-category="wetgeving">
+                            <div class="text-xs font-medium tracking-wider text-text-secondary uppercase mb-3">Wetgeving</div>
+                            <h4 class="font-display text-lg font-bold mb-3">GDPR</h4>
+                            <span class="inline-block text-xs font-medium text-text-secondary bg-white/[0.08] px-2.5 py-0.5 rounded-full mb-4">Persoonsgegevens &amp; AI</span>
+                            <p class="text-text-secondary text-sm leading-relaxed">Basis voor rechtmatige AI-trainingsdata, DPIA's en geautomatiseerde besluitvorming (art. 22). Blijft naast de AI Act gelden.</p>
+                        </article>
+
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-display text-xl font-semibold mb-4 text-text-primary border-b border-white/[0.06] pb-3">Nieuwe Wetgeving (2026 Toevoegingen)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 stagger-children">
+
+                        <article class="standard-card glass-card rounded-xl p-6 border-l-2 border-l-rose-400" data-category="wetgeving">
+                            <div class="text-xs font-medium tracking-wider text-rose-400 uppercase mb-3">Wetgeving (Nieuw)</div>
+                            <h4 class="font-display text-lg font-bold mb-3">Cyber Resilience Act</h4>
+                            <span class="inline-block text-xs font-medium text-rose-400 bg-rose-400/10 border border-rose-400/20 px-2.5 py-0.5 rounded-full mb-4">Rapportage: 11 sep 2026</span>
+                            <p class="text-text-secondary text-sm leading-relaxed">SBOM en kwetsbaarheidsbeheer voor alle producten met digitale elementen. 24/72-uurs meldplicht aan ENISA vanaf september 2026.</p>
+                        </article>
+
+                        <article class="standard-card glass-card rounded-xl p-6 border-l-2 border-l-sky-400" data-category="wetgeving">
+                            <div class="text-xs font-medium tracking-wider text-sky-400 uppercase mb-3">Wetgeving (Nieuw)</div>
+                            <h4 class="font-display text-lg font-bold mb-3">EU Data Act</h4>
+                            <span class="inline-block text-xs font-medium text-sky-400 bg-sky-400/10 border border-sky-400/20 px-2.5 py-0.5 rounded-full mb-4">Design-by-default: 12 sep 2026</span>
+                            <p class="text-text-secondary text-sm leading-relaxed">Sinds 12 sep 2025 van toepassing. Vanaf sep 2026 moeten nieuwe IoT-producten data toegankelijk maken voor gebruikers en derden.</p>
+                        </article>
+
+                        <article class="standard-card glass-card rounded-xl p-6 border-l-2 border-l-purple-400" data-category="wetgeving">
+                            <div class="text-xs font-medium tracking-wider text-purple-400 uppercase mb-3">Wetgeving (VS)</div>
+                            <h4 class="font-display text-lg font-bold mb-3">California SB 942</h4>
+                            <span class="inline-block text-xs font-medium text-purple-400 bg-purple-400/10 border border-purple-400/20 px-2.5 py-0.5 rounded-full mb-4">AI Transparency: 2 aug 2026</span>
+                            <p class="text-text-secondary text-sm leading-relaxed">Grote AI-platformen moeten gratis detectietools aanbieden en watermerken inbedden in alle AI-gegenereerde content.</p>
+                        </article>
+
+                        <article class="standard-card glass-card rounded-xl p-6 border-l-2 border-l-orange-400" data-category="wetgeving">
+                            <div class="text-xs font-medium tracking-wider text-orange-400 uppercase mb-3">Wetgeving (VS)</div>
+                            <h4 class="font-display text-lg font-bold mb-3">Colorado AI Act</h4>
+                            <span class="inline-block text-xs font-medium text-orange-400 bg-orange-400/10 border border-orange-400/20 px-2.5 py-0.5 rounded-full mb-4">Handhaving: 30 jun 2026</span>
+                            <p class="text-text-secondary text-sm leading-relaxed">Eerste brede staatswet tegen algoritmische discriminatie. Verplicht risicobeheer en impact assessments. Mogelijk uitgesteld naar jan 2027.</p>
+                        </article>
+
+                        <article class="standard-card glass-card rounded-xl p-6 border-l-2 border-l-yellow-400" data-category="wetgeving">
+                            <div class="text-xs font-medium tracking-wider text-yellow-400 uppercase mb-3">Wetgeving (VS)</div>
+                            <h4 class="font-display text-lg font-bold mb-3">EO 14365</h4>
+                            <span class="inline-block text-xs font-medium text-yellow-400 bg-yellow-400/10 border border-yellow-400/20 px-2.5 py-0.5 rounded-full mb-4">Federale Preemptie</span>
+                            <p class="text-text-secondary text-sm leading-relaxed">Trump executive order dec 2025 voert federaal AI-kader in dat strijdige staatswetten kan vervangen. AI Litigation Task Force actief.</p>
+                        </article>
+
+                        <article class="standard-card glass-card rounded-xl p-6 border-l-2 border-l-brand-accent" data-category="governance">
+                            <div class="text-xs font-medium tracking-wider text-brand-accent uppercase mb-3">Governance (Nieuw)</div>
+                            <h4 class="font-display text-lg font-bold mb-3">ISO/IEC 42005</h4>
+                            <span class="inline-block text-xs font-medium text-brand-accent bg-brand-accent/10 border border-brand-accent/20 px-2.5 py-0.5 rounded-full mb-4">AI Impact Assessment</span>
+                            <p class="text-text-secondary text-sm leading-relaxed">Gepubliceerd 2025. Concrete methodiek voor impact assessments die direct bruikbaar zijn onder AI Act art. 27 en Colorado AI Act.</p>
+                        </article>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="kernpunten" class="relative z-10 rounded-2xl glass-card p-6 md:p-10">
+            <h2 class="font-display text-3xl sm:text-4xl font-bold mb-6">Cruciale Updates 2026</h2>
+
+            <div class="space-y-3" id="accordion-container">
+
+                <details class="rounded-xl bg-white/[0.03] border border-white/[0.08] overflow-hidden" open>
+                    <summary class="px-6 py-4 hover:bg-white/[0.05] flex justify-between items-center transition-colors">
+                        <span class="font-display font-semibold text-brand-accent">Digital AI Omnibus: uitstel hoog-risico verplichtingen</span>
+                        <span class="text-2xl accordion-icon">+</span>
+                    </summary>
+                    <div class="px-6 py-4 text-text-secondary border-t border-white/[0.06] leading-relaxed">
+                        Op 7 mei 2026 bereikten EU-wetgevers politiek akkoord over het Digital AI Omnibus. Standalone hoog-risico AI-systemen krijgen tot 2 december 2027, AI in gereguleerde producten (medical devices, machinery) tot 2 augustus 2028. Wordt het pakket niet formeel aangenomen voor 2 augustus 2026, dan geldt de oorspronkelijke tijdlijn alsnog vanaf die datum.
+                    </div>
+                </details>
+
+                <details class="rounded-xl bg-white/[0.03] border border-white/[0.08] overflow-hidden">
+                    <summary class="px-6 py-4 hover:bg-white/[0.05] flex justify-between items-center transition-colors">
+                        <span class="font-display font-semibold text-brand-accent">CRA: CE-markering voor Software</span>
+                        <span class="text-2xl accordion-icon">+</span>
+                    </summary>
+                    <div class="px-6 py-4 text-text-secondary border-t border-white/[0.06] leading-relaxed">
+                        Vanaf 11 september 2026 moeten fabrikanten actief misbruikte kwetsbaarheden binnen 24 uur melden bij ENISA, een volledig rapport binnen 72 uur, en een eindrapport binnen 14 dagen. Volledige naleving (inclusief Software Bill of Materials) volgt op 11 december 2027. Boetes lopen tot &euro;15 miljoen of 2,5% van de wereldwijde jaaromzet. SBOM-readiness wordt in de praktijk minstens 15 maanden voor de officiële deadline verwacht.
+                    </div>
+                </details>
+
+                <details class="rounded-xl bg-white/[0.03] border border-white/[0.08] overflow-hidden">
+                    <summary class="px-6 py-4 hover:bg-white/[0.05] flex justify-between items-center transition-colors">
+                        <span class="font-display font-semibold text-brand-accent">Data Act &amp; AI Training Data</span>
+                        <span class="text-2xl accordion-icon">+</span>
+                    </summary>
+                    <div class="px-6 py-4 text-text-secondary border-t border-white/[0.06] leading-relaxed">
+                        De Data Act is sinds 12 september 2025 van toepassing. Vanaf 12 september 2026 gelden design-by-default verplichtingen: nieuwe IoT-producten op de EU-markt moeten data direct toegankelijk maken voor gebruikers, die deze kunnen doorgeven aan derden. Duitsland (Bundesnetzagentur) hanteert boetes tot 4% van de jaaromzet. Voor AI-aanbieders die leunen op gesloten datasets uit eigen apparaten heeft dit directe gevolgen voor het businessmodel.
+                    </div>
+                </details>
+
+                <details class="rounded-xl bg-white/[0.03] border border-white/[0.08] overflow-hidden">
+                    <summary class="px-6 py-4 hover:bg-white/[0.05] flex justify-between items-center transition-colors">
+                        <span class="font-display font-semibold text-brand-accent">VS: Federale preemptie versus Staatsregels</span>
+                        <span class="text-2xl accordion-icon">+</span>
+                    </summary>
+                    <div class="px-6 py-4 text-text-secondary border-t border-white/[0.06] leading-relaxed">
+                        Op 11 december 2025 tekende president Trump Executive Order 14365, dat een uniform federaal AI-kader instelt en strijdige staatswetten challenged. Een White House AI Litigation Task Force grijpt in bij rechtszaken tegen Colorado en California. De Colorado AI Act blijft op koers voor 30 juni 2026 handhaving (mogelijk uitgesteld tot januari 2027), terwijl California SB 942 op 2 augustus 2026 ingaat. Bedrijven moeten navigeren tussen strengere staatseisen en een lossere federale visie.
+                    </div>
+                </details>
+
+                <details class="rounded-xl bg-white/[0.03] border border-white/[0.08] overflow-hidden">
+                    <summary class="px-6 py-4 hover:bg-white/[0.05] flex justify-between items-center transition-colors">
+                        <span class="font-display font-semibold text-brand-accent">Praktische actiepunten voor Q3 2026</span>
+                        <span class="text-2xl accordion-icon">+</span>
+                    </summary>
+                    <div class="px-6 py-4 text-text-secondary border-t border-white/[0.06] leading-relaxed">
+                        <ol class="list-decimal pl-5 space-y-1.5 marker:text-brand-accent">
+                            <li>SBOM-pipeline operationeel voor alle uitgeleverde software (CRA).</li>
+                            <li>24-uurs ENISA meldproces oefenen via tabletop exercise.</li>
+                            <li>Connected product portfolio mappen tegen Data Act design-by-default vereisten.</li>
+                            <li>Watermerk- en provenance-tooling testen tegen C2PA standaard.</li>
+                            <li>ISO/IEC 42001 gap-assessment uitvoeren als basis voor AI Act conformiteit 2027.</li>
+                            <li>Voor VS-markt: dual-track compliance strategie (Colorado + EO 14365) documenteren.</li>
+                        </ol>
+                    </div>
+                </details>
+
+            </div>
+        </section>
+
+        <section id="mythos" class="relative z-10 space-y-8">
+            <div>
+                <span class="inline-block px-3 py-1 rounded-full text-xs font-medium bg-brand-accent/10 text-brand-accent border border-brand-accent/20">Casus &middot; Mei 2026</span>
+                <h2 class="font-display text-3xl sm:text-4xl font-bold mt-4 mb-3 leading-tight">Het <span class="wordmark-complex">Mythos</span> Moment</h2>
+                <p class="text-text-secondary leading-relaxed max-w-4xl">
+                    Anthropic's Claude Mythos werd in maart 2026 onthuld als frontier model dat kwetsbaarheden in vrijwel elk besturingssysteem en webbrowser kan vinden en exploiteren, ook in handen van niet-experts. Op 7 mei 2026 waarschuwde het IMF expliciet voor "macrofinanciële schokken" door deze categorie modellen.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-[1.4fr_1fr] gap-6 items-start">
+                <div class="glass-card rounded-2xl p-6 md:p-8 space-y-5">
+                    <div>
+                        <div class="text-[10px] font-mono tracking-widest text-text-muted mb-2">DE FEITEN</div>
+                        <h3 class="font-display text-xl font-bold mb-3">Waarom regelgevers nu in actie komen</h3>
+                        <p class="text-text-secondary text-sm leading-relaxed">
+                            Mythos collapsed de afstand tussen het ontdekken en exploiteren van zero-days. Anthropic koos voor een gefaseerde uitrol via 'Project Glasswing' aan een selecte groep (Apple, Google, Microsoft, Nvidia, JPMorgan Chase) om kritieke software eerst te kunnen beveiligen. Het neveneffect: ongelijke cyber-bescherming en een acute toezichtsvraag.
+                        </p>
+                    </div>
+
+                    <div class="grid sm:grid-cols-3 gap-3">
+                        <div class="rounded-lg bg-white/[0.04] border border-white/[0.06] p-3">
+                            <div class="font-display text-xl font-bold text-brand-accent leading-none">10²⁶</div>
+                            <div class="text-xs text-text-secondary mt-1.5">FLOPs drempel NY RAISE Act</div>
+                        </div>
+                        <div class="rounded-lg bg-white/[0.04] border border-white/[0.06] p-3">
+                            <div class="font-display text-xl font-bold text-brand-accent leading-none">$500M</div>
+                            <div class="text-xs text-text-secondary mt-1.5">Omzetdrempel ontwikkelaars</div>
+                        </div>
+                        <div class="rounded-lg bg-white/[0.04] border border-white/[0.06] p-3">
+                            <div class="font-display text-xl font-bold text-brand-accent-warm leading-none">1000+</div>
+                            <div class="text-xs text-text-secondary mt-1.5">Onbekende bugs gevonden</div>
+                        </div>
+                    </div>
+
+                    <blockquote class="border-l-2 border-brand-accent pl-4 py-1">
+                        <p class="text-text-primary text-sm leading-relaxed italic">"Very heightened risk to the financial system."</p>
+                        <footer class="text-text-muted text-xs mt-2">Jamie Dimon, CEO JPMorgan Chase, over Mythos</footer>
+                    </blockquote>
+
+                    <div>
+                        <div class="text-[10px] font-mono tracking-widest text-text-muted mb-3">REGULATOIRE RESPONS</div>
+                        <ul class="space-y-2.5 text-sm">
+                            <li class="flex gap-3"><span class="text-brand-accent shrink-0 mt-0.5">&rarr;</span><span class="text-text-secondary"><strong class="text-text-primary">VK:</strong> Bank of England, NCSC, FCA en Treasury beleggen spoedoverleg met banken en verzekeraars.</span></li>
+                            <li class="flex gap-3"><span class="text-brand-accent shrink-0 mt-0.5">&rarr;</span><span class="text-text-secondary"><strong class="text-text-primary">VS:</strong> Treasury Bessent en Fed Chair Powell briefen bank CEO's. Vice Chair Bowman markeert het dual-use risico.</span></li>
+                            <li class="flex gap-3"><span class="text-brand-accent shrink-0 mt-0.5">&rarr;</span><span class="text-text-secondary"><strong class="text-text-primary">IMF/Wereldbank:</strong> Voorjaarsbijeenkomsten plaatsen frontier model risico op de prudentiële agenda.</span></li>
+                            <li class="flex gap-3"><span class="text-brand-accent shrink-0 mt-0.5">&rarr;</span><span class="text-text-secondary"><strong class="text-text-primary">NY RAISE Act:</strong> Verplichte safety reporting voor frontier ontwikkelaars boven de FLOPs- en omzetdrempels.</span></li>
+                            <li class="flex gap-3"><span class="text-brand-accent shrink-0 mt-0.5">&rarr;</span><span class="text-text-secondary"><strong class="text-text-primary">US AISI:</strong> Centraal hub voor technische evaluatie en verplichte pre-release red teaming.</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="space-y-4 lg:sticky lg:top-24">
+                    <div class="news-card p-5">
+                        <div class="flex items-start gap-3">
+                            <div class="w-9 h-9 rounded-full bg-[#fcd5b5] flex items-center justify-center font-bold text-[#1f2937] text-xs shrink-0">FT</div>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-sm font-semibold text-[#1f2937]">Financial Times</div>
+                                <div class="text-xs text-gray-500">ft.com</div>
+                            </div>
+                            <span class="text-gray-400 text-xl leading-none">&vellip;</span>
+                        </div>
+                        <h3 class="mt-3 text-base font-semibold leading-snug text-[#1a73e8]">IMF warns new AI models risk 'systemic' shock to finance</h3>
+                        <p class="mt-2 text-xs text-gray-600 leading-relaxed">7 mei 2026 &middot; The IMF alert underlines how regulators are alarmed at Anthropic's Claude Mythos amplifying correlated cyber failures.</p>
+                    </div>
+
+                    <div class="news-card p-5">
+                        <div class="flex items-start gap-3">
+                            <div class="w-9 h-9 rounded-full bg-[#1a73e8]/10 flex items-center justify-center font-bold text-[#1a73e8] text-xs shrink-0">BBC</div>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-sm font-semibold text-[#1f2937]">CBS News</div>
+                                <div class="text-xs text-gray-500">cbsnews.com</div>
+                            </div>
+                            <span class="text-gray-400 text-xl leading-none">&vellip;</span>
+                        </div>
+                        <h3 class="mt-3 text-base font-semibold leading-snug text-[#1a73e8]">Powell, Bessent meet bank CEOs over Anthropic's Mythos</h3>
+                        <p class="mt-2 text-xs text-gray-600 leading-relaxed">Treasury and Fed convene major bank leadership to brief on Mythos cybersecurity capabilities and risks.</p>
+                    </div>
+
+                    <div class="news-card p-5">
+                        <div class="flex items-start gap-3">
+                            <div class="w-9 h-9 rounded-full bg-[#0a0a0a] flex items-center justify-center font-bold text-white text-xs shrink-0">R</div>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-sm font-semibold text-[#1f2937]">Raconteur</div>
+                                <div class="text-xs text-gray-500">raconteur.net</div>
+                            </div>
+                            <span class="text-gray-400 text-xl leading-none">&vellip;</span>
+                        </div>
+                        <h3 class="mt-3 text-base font-semibold leading-snug text-[#1a73e8]">UK regulators and banks hold urgent meeting on Mythos risks</h3>
+                        <p class="mt-2 text-xs text-gray-600 leading-relaxed">BoE, NCSC, FCA en Treasury zitten met grootbanken aan tafel over Glasswing-toegang en marktrisico.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rounded-2xl bg-brand-accent/[0.06] border border-brand-accent/20 p-6 md:p-8 flex flex-col md:flex-row gap-5 md:items-center">
+                <div class="text-xs font-mono tracking-widest text-brand-accent shrink-0 md:w-32">MYTHOS LENS</div>
+                <div class="flex-1">
+                    <p class="text-text-primary leading-relaxed mb-4">
+                        De Mythos casus is geen academische exercitie meer. AI Act art. 15 (robuustheid), de AI Liability Directive (bewijslast), de NY RAISE Act (frontier safety reporting) en het US AISI red teaming kader vormen samen de eerste echte juridische rem op modellen met offensieve cybercapaciteiten.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="mailto:raymond@legalcomplex.com" class="inline-flex items-center px-5 py-2.5 rounded-lg text-sm font-medium bg-brand-button text-text-primary hover:bg-brand-button/90 shadow-lg shadow-brand-button/20 transition-all">Contact Mythos research</a>
+                        <a href="#architectuur" class="inline-flex items-center px-5 py-2.5 rounded-lg text-sm font-medium bg-white/[0.05] text-text-primary border border-white/[0.1] hover:bg-white/[0.1] transition-all">Bekijk de architectuur</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-white/[0.06] mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="text-center md:text-left">
+                    <div class="font-display text-lg">
+                        <span>legal</span><span class="wordmark-complex">complex</span>
+                        <span class="text-text-muted text-sm font-sans ml-2">/ Mythos</span>
+                    </div>
+                    <p class="text-text-muted text-xs mt-2">&copy; 2026 Legalcomplex &middot; Update 11 mei 2026 &middot; KvK 71150072</p>
+                </div>
+                <img src="./footer-logo.png"
+                     alt="Legalcomplex"
+                     onerror="this.style.display='none'"
+                     class="h-8 opacity-90"
+                     style="max-width:216px;">
+            </div>
+            <div class="mt-6 pt-6 border-t border-white/[0.04] text-text-muted text-xs leading-relaxed">
+                Bronnen: Europese Commissie, ENISA, Holland &amp; Knight, Mayer Brown, King &amp; Spalding, Financial Times. Niets in dit dashboard vormt juridisch advies.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const chartCtx = document.getElementById('complianceChart').getContext('2d');
+
+        const complianceChart = new Chart(chartCtx, {
+            type: 'polarArea',
+            data: {
+                labels: ['Governance', 'Technisch', 'Veiligheid', 'EU Wetgeving', 'VS Wetgeving'],
+                datasets: [{
+                    data: [2, 2, 2, 4, 3],
+                    backgroundColor: [
+                        'rgba(186, 172, 153, 0.70)',
+                        'rgba(110, 231, 183, 0.55)',
+                        'rgba(245, 158, 11, 0.65)',
+                        'rgba(251, 113, 133, 0.60)',
+                        'rgba(192, 132, 252, 0.60)'
+                    ],
+                    borderColor: 'rgba(39, 39, 39, 0.85)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#a0a0a0',
+                            font: { family: 'Manrope', size: 11 },
+                            padding: 14,
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(26, 26, 26, 0.95)',
+                        titleColor: '#f0f0f0',
+                        bodyColor: '#a0a0a0',
+                        borderColor: 'rgba(186, 172, 153, 0.3)',
+                        borderWidth: 1,
+                        titleFont: { family: 'Comfortaa', weight: 'bold' },
+                        bodyFont: { family: 'Manrope' },
+                        padding: 12,
+                        callbacks: { label: (ctx) => ` ${ctx.parsed.r} kaders` }
+                    }
+                },
+                scales: {
+                    r: {
+                        ticks: { display: false },
+                        grid: { color: 'rgba(255,255,255,0.06)' },
+                        angleLines: { color: 'rgba(255,255,255,0.06)' }
+                    }
+                }
+            }
+        });
+
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const standardCards = document.querySelectorAll('.standard-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('active', 'bg-brand-button', 'text-text-primary', 'shadow-lg', 'shadow-brand-button/20');
+                    b.classList.add('bg-white/[0.05]', 'text-text-secondary', 'border', 'border-white/[0.1]');
+                });
+                btn.classList.add('active', 'bg-brand-button', 'text-text-primary', 'shadow-lg', 'shadow-brand-button/20');
+                btn.classList.remove('bg-white/[0.05]', 'text-text-secondary', 'border', 'border-white/[0.1]');
+                const filter = btn.getAttribute('data-filter');
+                standardCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
